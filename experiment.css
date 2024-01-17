@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 140px;
+    width: 100%;
+}
+.fixation {
+    font-size: xx-large;
+}
