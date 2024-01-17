@@ -112,8 +112,8 @@ g.trial = {
             rightimg = jsPsych.timelineVariable('congruent', true);
         }
         let string_parts = [];
-        string_parts.push('<div class="container"><div class="faceimg"><img alt="human_face" src="' + leftimg + '"></div>');
-        string_parts.push('<div class="faceimg"><img alt="human_face" src="' + rightimg + '"></div></div>');
+        string_parts.push('<div class="container"><div class="faceimg"><img alt="human_face" src="' + g.repo + leftimg + '"></div>');
+        string_parts.push('<div class="faceimg"><img alt="human_face" src="' + g.repo + rightimg + '"></div></div>');
         return string_parts.join('')
     },
     choices: ['ArrowLeft', 'ArrowRight'],
