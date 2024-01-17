@@ -55,7 +55,7 @@ for (let i=0; i < g.emotions.length; i++) {
     // 10 trials in the block, one from each subject
     let cong_on_left = jsPsych.randomization.repeat([true, false], 5);
 
-    for (let j=0; j < 2; j++) {  // j < 10
+    for (let j=0; j < 10; j++) {
 
         let prefix = 'subject_' + g.subjects[j] + '/' + g.emotions[i].emotion + '/sub' + g.subjects[j] + '_' + g.emotions[i].code + '_'
         let coloration = g.emotions[i].code;
