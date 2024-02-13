@@ -67,7 +67,7 @@ for (let i=0; i < g.emotions.length; i++) {
                 incongruent: prefix + g.coloration[k] + '.png',
                 congruent_on_left: cong_on_left[j]
             });
-            g.images.push(prefix + g.coloration[k] + '.png')
+            g.images.push(g.repo + prefix + g.coloration[k] + '.png');
         }
     }
     // shuffle block
