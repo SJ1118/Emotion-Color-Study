@@ -6,7 +6,7 @@ var g = {};  // put everything in a namespace variable to simplify cleanup, avoi
 g.repo = "https://sj1118.github.io/Emotion-Color-Study/";
 
 
-/* 6 blocks of 10 trials
+/* 6 blocks of 60 trials
 Each block corresponds to a single emotion.
 
 Each trial consists of:
@@ -36,8 +36,8 @@ g.emotions = [
     { code: 15, emotion: 'Surprisely_fearful', emotion_label: 'Fearfully surprised' }  // "fearfully surprised"
 ]
 
-// emotion codes (currently includes additional emotions)
-g.coloration = [2, 3, 4, 5, 6, 8, 9, 15];
+// emotion codes
+g.coloration = [2, 3, 4, 5, 6, 15];
 
 g.subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11];
 
@@ -49,26 +49,29 @@ g.subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11];
 g.emotions = jsPsych.randomization.shuffle(g.emotions);
 
 g.blocks = [];
+g.images = [];
 for (let i=0; i < g.emotions.length; i++) {
 
     let block = [];
-    // 10 trials in the block, one from each subject
-    let cong_on_left = jsPsych.randomization.repeat([true, false], 5);
+    // 60 trials in the block, six from each subject
+    let cong_on_left = jsPsych.randomization.repeat([true, false], 30);
 
-    for (let j=0; j < 10; j++) {
-
+    // loop over subjects
+    for (let j=0; j < g.subjects.length; j++) {
         let prefix = 'subject_' + g.subjects[j] + '/' + g.emotions[i].emotion + '/sub' + g.subjects[j] + '_' + g.emotions[i].code + '_'
-        let coloration = g.emotions[i].code;
-        while (coloration === g.emotions[i].code) {
-            coloration = jsPsych.randomization.sampleWithoutReplacement(g.coloration, 1)[0];
-        }
 
-        block.push({
-            congruent: prefix + g.emotions[i].code + '.png',
-            incongruent: prefix + coloration + '.png',
-            congruent_on_left: cong_on_left[j]
-        });
+        // loop over facial colors
+        for (let k=0; k < g.coloration.length; k++) {
+            block.push({
+                congruent: prefix + g.emotions[i].code + '.png',
+                incongruent: prefix + g.coloration[k] + '.png',
+                congruent_on_left: cong_on_left[j]
+            });
+            g.images.push(prefix + g.coloration[k] + '.png')
+        }
     }
+    // shuffle block
+    block = jsPsych.randomization.shuffle(block);
     g.blocks.push({
         emotion: g.emotions[i].emotion,
         emotion_label: g.emotions[i].emotion_label,
@@ -77,6 +80,11 @@ for (let i=0; i < g.emotions.length; i++) {
 }
 
 g.timeline = [];
+
+g.preload = {
+    type: 'preload',
+    images: g.images
+}
 
 g.welcome = {
     type: "fullscreen",
@@ -114,12 +122,14 @@ g.trial = {
         let string_parts = [];
         string_parts.push('<div class="container"><div class="faceimg"><img alt="human_face" src="' + g.repo + leftimg + '"></div>');
         string_parts.push('<div class="faceimg"><img alt="human_face" src="' + g.repo + rightimg + '"></div></div>');
+        //let emotion = jsPsych.timelineVariable('emotion_label');
+        //string_parts.push('<br/>Which face expresses <b>' + emotion + '</b> most clearly?<br>Press the left or right arrow key.')
         return string_parts.join('')
     },
     choices: ['ArrowLeft', 'ArrowRight'],
     prompt: function(){
         let emotion = jsPsych.timelineVariable('emotion_label');
-        return 'Which face looks more <b>' + emotion + '</b>?<br>Press the left or right arrow key.'
+        return 'Which face expresses <b>' + emotion + '</b> most clearly?<br>Press the left or right arrow key.'
     },
     data: {
         congruent_on_left: jsPsych.timelineVariable('congruent_on_left'),
@@ -145,6 +155,7 @@ g.trial = {
 }
 
 g.timeline.push(g.welcome);
+g.timeline.push(g.preload);
 
 // build timeline
 g.blocks.forEach(function(block){
@@ -156,7 +167,7 @@ g.blocks.forEach(function(block){
     });
     g.timeline.push({
         timeline: [{
-            timeline: [g.fixation, g.blank, g.trial],
+            timeline: [g.blank, g.fixation, g.trial],
             timeline_variables: block.block
         }],
         timeline_variables: [{ emotion_label: block.emotion_label }]

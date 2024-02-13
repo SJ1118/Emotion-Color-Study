@@ -6,7 +6,7 @@
     width: 100%;
 }
 .fixation {
-    font-size: xx-large;
+    font-size: xxx-large;
 }
 
 #display_stage_background {
@@ -21,10 +21,15 @@
     top: 1vh;
     height: 98vh;
     width: 98vw;
-    background-color: white;
+    background-color: black;
+    color: white;
     box-shadow: 1px 1px 1px #999;
     border-radius: 15px;
     z-index: 0;
     overflow-y: hidden;
     overflow-x: hidden;
+}
+.jspsych-btn {
+    color: white;
+    background-color: black;
 }
