@@ -129,7 +129,7 @@ g.trial = {
     choices: ['ArrowLeft', 'ArrowRight'],
     prompt: function(){
         let emotion = jsPsych.timelineVariable('emotion_label');
-        return 'Which face expresses <b>' + emotion + '</b> most clearly?<br>Press the left or right arrow key.'
+        return 'Which face conveys <b>' + emotion + '</b> most clearly?<br>Press the left or right arrow key.'
     },
     data: {
         congruent_on_left: jsPsych.timelineVariable('congruent_on_left'),
