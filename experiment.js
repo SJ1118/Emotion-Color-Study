@@ -23,8 +23,34 @@ Randomization:
 order of blocks (emotions)
 congruent image side
 
-
  */
+
+// subject info:
+g.subjects = {
+    'W': {
+        'M': [9, 31, 11, 21, 14, 24],
+        'F': [2, 22, 3, 4, 30, 16]
+    },
+    'B': {
+        'M': [72, 107, 152, 40, 151, 37],
+        'F': [1, 17, 44, 27, 67, 39]
+    },
+    'A': {
+        'M': [13, 23, 15, 32, 33, 38],
+        'F': [56, 58, 71, 63, 65, 62]
+    },
+    'O': {
+        'M': [18, 25, 36, 26, 29, 28],
+        'F': [19, 20, 46, 42, 54, 50]
+    }
+}
+
+// shuffle subjects within categories
+Object.keys(g.subjects).forEach(key => {
+    g.subjects[key]['M'] = jsPsych.randomization.shuffle(g.subjects[key]['M']);
+    g.subjects[key]['F'] = jsPsych.randomization.shuffle(g.subjects[key]['F']);
+});
+
 
 // Emotions which get a block
 g.emotions = [
@@ -39,7 +65,7 @@ g.emotions = [
 // emotion codes
 g.coloration = [2, 3, 4, 5, 6, 15];
 
-g.subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11];
+//g.subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11];
 
 // stimulus has form: subject_{subject number}/{Emotion}/sub{subject number}_{expression}_{coloration}.png
 
@@ -55,21 +81,69 @@ for (let i=0; i < g.emotions.length; i++) {
     let block = [];
     // 60 trials in the block, six from each subject
     let cong_on_left = jsPsych.randomization.repeat([true, false], 30);
+    let left_idx = 0;
 
-    // loop over subjects
-    for (let j=0; j < g.subjects.length; j++) {
-        let prefix = 'subject_' + g.subjects[j] + '/' + g.emotions[i].emotion + '/sub' + g.subjects[j] + '_' + g.emotions[i].code + '_'
+    // pick one subject from each race/sex category: 8 subjects x 6 emotions for 48 trials
+    Object.keys(g.subjects).forEach(racekey => {
+        Object.keys(g.subjects[racekey]).forEach(sexkey => {
+            let subject_id = g.subjects[racekey][sexkey][i];
+            let prefix = 'Balanced_Subjects/subject_' + subject_id + '/' + g.emotions[i].emotion + '/sub' + subject_id + '_' + g.emotions[i].code + '_';
+            // loop over facial colors
+            for (let k=0; k < g.coloration.length; k++) {
+                block.push({
+                    congruent: prefix + g.emotions[i].code + '.png',
+                    incongruent: prefix + g.coloration[k] + '.png',
+                    congruent_on_left: cong_on_left[left_idx]
+                });
+                left_idx += 1;
+                g.images.push(g.repo + prefix + g.coloration[k] + '.png');
+            }
+        });
+    });
 
-        // loop over facial colors
-        for (let k=0; k < g.coloration.length; k++) {
-            block.push({
-                congruent: prefix + g.emotions[i].code + '.png',
-                incongruent: prefix + g.coloration[k] + '.png',
-                congruent_on_left: cong_on_left[j]
-            });
-            g.images.push(g.repo + prefix + g.coloration[k] + '.png');
-        }
+    // for remaining 12 trials, select 12 additional subjects, three from each race
+    let colorations12 = jsPsych.randomization.repeat(g.coloration, 2);
+    let subjects12 = [];
+    let plus1 = (i + 1) % 6;
+    let plus2 = (i + 2) % 6;
+    Object.keys(g.subjects).forEach(racekey => {
+        let extrasex = jsPsych.randomization.sampleWithoutReplacement(['M', 'F'], 1)[0];
+        subjects12.push(g.subjects[racekey]['M'][plus1]);
+        subjects12.push(g.subjects[racekey]['F'][plus1]);
+        subjects12.push(g.subjects[racekey][extrasex][plus2]);
+    });
+    for (let j=0; j < colorations12.length; j++) {
+        let subject_id = subjects12[j];
+        let prefix = 'Balanced_Subjects/subject_' + subject_id + '/' + g.emotions[i].emotion + '/sub' + subject_id + '_' + g.emotions[i].code + '_';
+
+        block.push({
+            congruent: prefix + g.emotions[i].code + '.png',
+            incongruent: prefix + colorations12[j] + '.png',
+            congruent_on_left: cong_on_left[left_idx]
+        });
+        left_idx += 1;
+        g.images.push(g.repo + prefix + colorations12[j] + '.png');
     }
+
+    // // -----------old code ------------------
+    // // loop over subjects
+    // for (let j=0; j < g.subjects.length; j++) {
+    //     let prefix = 'subject_' + g.subjects[j] + '/' + g.emotions[i].emotion + '/sub' + g.subjects[j] + '_' + g.emotions[i].code + '_'
+    //
+    //     // loop over facial colors
+    //     for (let k=0; k < g.coloration.length; k++) {
+    //         block.push({
+    //             congruent: prefix + g.emotions[i].code + '.png',
+    //             incongruent: prefix + g.coloration[k] + '.png',
+    //             congruent_on_left: cong_on_left[j]
+    //         });
+    //         g.images.push(g.repo + prefix + g.coloration[k] + '.png');
+    //     }
+    // }
+    // // ------------end old code --------------------
+
+
+
     // shuffle block
     block = jsPsych.randomization.shuffle(block);
     g.blocks.push({
