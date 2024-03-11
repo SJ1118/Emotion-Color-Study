@@ -181,7 +181,7 @@ g.blank = {
     trial_duration: 500
 }
 
-g.trial = {
+g.oldtrial = {
     type: 'html-keyboard-response',
     stimulus: function() {
         let leftimg;
@@ -228,17 +228,64 @@ g.trial = {
     }
 }
 
+g.trial = {
+    type: 'html-button-response',
+    stimulus: '',
+    choices: ['left', 'right'],
+    button_html: function(){
+            let leftimg;
+            let rightimg;
+            if (jsPsych.timelineVariable('congruent_on_left', true)) {
+                leftimg = jsPsych.timelineVariable('congruent', true);
+                rightimg = jsPsych.timelineVariable('incongruent', true);
+            } else {
+                leftimg = jsPsych.timelineVariable('incongruent', true);
+                rightimg = jsPsych.timelineVariable('congruent', true);
+            }
+
+            return [
+                '<button class="faceimg"><img alt="human_face" src="' + g.repo + leftimg + '"></button>',
+                '<button class="faceimg"><img alt="human_face" src="' + g.repo + rightimg + '"></button>'
+            ]
+    },
+    margin_horizontal: '70px',
+    margin_vertical: '10px',
+    prompt: function(){
+        let emotion = jsPsych.timelineVariable('emotion_label');
+        return 'Which face conveys <b>' + emotion + '</b> most clearly?<br>Press the image.'
+    },
+    data: {
+        congruent_on_left: jsPsych.timelineVariable('congruent_on_left'),
+        congruent: jsPsych.timelineVariable('congruent'),
+        incongruent: jsPsych.timelineVariable('incongruent')
+    },
+    on_finish: function(data) {
+        if ((data.congruent_on_left && data.response === 0) ||
+            (!data.congruent_on_left && data.response === 1)) {
+            data.selected_img = 'congruent';
+        } else {
+            data.selected_img = 'incongruent';
+        }
+    }
+}
+
 g.timeline.push(g.welcome);
 g.timeline.push(g.preload);
 
 // build timeline
 g.blocks.forEach(function(block){
+    // g.timeline.push({
+    //     type: 'html-keyboard-response',
+    //     stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
+    //     prompt: 'Press any key to continue',
+    //     choices: jsPsych.ALL_KEYS
+    // });
     g.timeline.push({
-        type: 'html-keyboard-response',
+        type: 'html-button-response',
         stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
-        prompt: 'Press any key to continue',
-        choices: jsPsych.ALL_KEYS
+        choices: ['Continue']
     });
+
     g.timeline.push({
         timeline: [{
             timeline: [g.blank, g.fixation, g.trial],
