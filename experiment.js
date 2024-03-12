@@ -57,13 +57,14 @@ g.emotions = [
     { code: 2, emotion: 'Happy', emotion_label: 'Happy' },
     { code: 3, emotion: 'Sad', emotion_label: 'Sad' },
     { code: 4, emotion: 'Angry', emotion_label: 'Angry' },
-    { code: 5, emotion: 'Surprised', emotion_label: 'Surprised' },
+    //{ code: 5, emotion: 'Surprised', emotion_label: 'Surprised' },
     { code: 6, emotion: 'Disgusted', emotion_label: 'Disgusted' },
+    { code: 9, emotion: 'Happy_disgusted', emotion_label: 'Happily Disgusted'},
     { code: 15, emotion: 'Surprisely_fearful', emotion_label: 'Fearfully surprised' }  // "fearfully surprised"
 ]
 
 // emotion codes
-g.coloration = [2, 3, 4, 5, 6, 15];
+g.coloration = [2, 3, 4, 6, 9, 15];
 
 //g.subjects = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11];
 
