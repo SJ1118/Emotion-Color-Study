@@ -274,7 +274,7 @@ g.timeline.push(g.welcome);
 g.timeline.push(g.preload);
 
 // build timeline
-g.blocks.forEach(function(block){
+g.blocks.forEach(function(block, idx){
     // g.timeline.push({
     //     type: 'html-keyboard-response',
     //     stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
@@ -294,6 +294,13 @@ g.blocks.forEach(function(block){
         }],
         timeline_variables: [{ emotion_label: block.emotion_label }]
     });
+
+    g.timeline.push({
+        type: 'html-button-response',
+        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'block_end/' + (idx + 1).toString() +  '.png">',
+        choices: ['Continue']
+    });
+
 })
 
 
