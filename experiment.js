@@ -297,7 +297,7 @@ g.blocks.forEach(function(block, idx){
 
     g.timeline.push({
         type: 'html-button-response',
-        stimulus: '<img alt="Great job!" style="height: 60vh;" class="block-end-img" src="' + g.repo + 'block_end/' + (idx + 1).toString() +  '.png">',
+        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'block_end/' + (idx + 1).toString() +  '.png">',
         choices: ['Continue']
     });
 
