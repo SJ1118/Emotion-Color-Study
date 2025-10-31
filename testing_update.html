@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Experiment</title>
+    <script src="lib/jspsych-6.3.1/jspsych.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-html-slider-response.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+
+    <script src="experiment_update.js"></script>
+
+    <link href="lib/jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+    <link href="experiment.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id = 'display_stage_background'></div>
+<div id = 'display_stage'></div>
+</body>
+
+<script>
+    jsPsych.init({
+        timeline: g.timeline,
+        display_element: 'display_stage',
+        on_finish: function() {
+            jsPsych.data.displayData();
+        }
+    })
+</script>
+</html>
