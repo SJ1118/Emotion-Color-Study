@@ -255,12 +255,6 @@ g.timeline.push(g.preload);
 
 // build timeline
 g.blocks.forEach(function(block, idx){
-    // g.timeline.push({
-    //     type: 'html-keyboard-response',
-    //     stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
-    //     prompt: 'Press any key to continue',
-    //     choices: jsPsych.ALL_KEYS
-    // });
     g.timeline.push({
         type: 'html-button-response',
         stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
@@ -277,11 +271,12 @@ g.blocks.forEach(function(block, idx){
 
     g.timeline.push({
         type: 'html-button-response',
-        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/_' + (idx + 1).toString() +  '.png">',
+        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/' + (idx + 1).toString() +  '.png">',
         choices: ['Continue']
     });
+});
 
-})
+
 
 // Sliding scale task
 /* Group trials into blocks
@@ -345,17 +340,28 @@ function generate_sstrial(emotion_idx, color_emotion_idx, subject_id, is_baselin
     g.images.push(g.repo + imagepath);
 
     let trialtype;
+    let emotion;
+    let color_emotion;
     if (is_baseline) {
         trialtype = 'baseline';
+        emotion = 'none';
+        color_emotion = 'none'
     } else if (emotion_idx === color_emotion_idx) {
         trialtype = 'congruent';
+        emotion = g.emotions[emotion_idx].emotion_label;
+        color_emotion = g.emotions[emotion_idx].emotion_label;
     } else {
         trialtype = 'incongruent';
+        emotion = g.emotions[emotion_idx].emotion_label;
+        color_emotion = g.emotions[color_emotion_idx].emotion_label;
     }
 
     return {
         imagepath: imagepath,
         trialtype: trialtype,
+        emotion: emotion,
+        color_emotion: color_emotion,
+        subject_id: subject_id
     }
 }
 
@@ -387,10 +393,22 @@ for (let i=0; i < g.emotions.length; i++) {
 
 g.sstrial = {
     type: 'html-slider-response',
+    labels: ['Not at all', 'Extremely strongly'],
+    prompt: '',
     stimulus: function() {
-        return '<img alt="human_face" src="' + g.repo + jsPsych.timelineVariable('imagepath', true) + '">';
+        return '<p>How strongly does this face express emotion?</p>' +
+            '<img alt="human_face" src="' + g.repo + jsPsych.timelineVariable('imagepath', true) + '">';
+    },
+    data: {
+        emotion: jsPsych.timelineVariable('emotion'),
+        color_emotion: jsPsych.timelineVariable('color_emotion'),
+        subject_id: jsPsych.timelineVariable('subject_id'),
+        trialtype: jsPsych.timelineVariable('trialtype')
     }
 }
+
+
+//g.timeline = [];  // TESTING ONLY
 
 g.timeline.push({
     type: 'html-button-response',
@@ -413,7 +431,7 @@ g.ssblocks.forEach(function(block, idx){
     });
     g.timeline.push({
         type: 'html-button-response',
-        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/_' + (idx + 1).toString() +  '.png">',
+        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/' + (idx + 1).toString() +  '.png">',
         choices: ['Continue']
     });
 });
