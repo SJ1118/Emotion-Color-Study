@@ -5,6 +5,7 @@ var g = {};  // put everything in a namespace variable to simplify cleanup, avoi
 
 g.repo = "https://sj1118.github.io/Emotion-Color-Study/";
 
+//g.repo = '';  // TODO: remove!  Only for testing!!!
 
 /* 6 blocks of 15 trials
 Each block corresponds to a single emotion.
@@ -212,7 +213,7 @@ g.oldtrial = {
 g.trial = {
     type: 'html-button-response',
     stimulus: '',
-    choices: ['left', 'right'],
+    choices: ['left', 'same', 'right'],
     button_html: function(){
             let leftimg;
             let rightimg;
@@ -226,14 +227,16 @@ g.trial = {
 
             return [
                 '<button class="faceimg"><img alt="human_face" src="' + g.repo + leftimg + '"></button>',
+                '<button class="samebtn">They feel the same</button>',
                 '<button class="faceimg"><img alt="human_face" src="' + g.repo + rightimg + '"></button>'
             ]
     },
     margin_horizontal: '70px',
     margin_vertical: '10px',
     prompt: function(){
-        let emotion = jsPsych.timelineVariable('emotion_label');
-        return 'Which face conveys <b>' + emotion + '</b> most clearly?<br>Press the image.'
+        return '<div class="topprompt">Who seems to be feeling more?</div>'
+        // let emotion = jsPsych.timelineVariable('emotion_label');
+        // return 'Which face conveys <b>' + emotion + '</b> most clearly?<br>Press the image.'
     },
     data: {
         congruent_on_left: jsPsych.timelineVariable('congruent_on_left'),
@@ -250,16 +253,31 @@ g.trial = {
     }
 }
 
+g.fcp_instructions = {
+    type: 'html-button-response',
+    stimulus: '<div class="instructions-container"><p>In this task, two faces will appear on the screen at the same time.</p>' +
+        '<p>People can show feelings in different amounts. Sometimes someone looks like they are feeling a lot, and other times they look like they are feeling only a little, or not much at all.</p>' +
+        '<p>Your job is to:</p>' +
+        '<ul><li>Look at both faces carefully.</li>' +
+        '<li>Choose the face that seems to be feeling more.</li>' +
+        '<li>The face showing more feeling might be on the left or the right.</li></ul>' +
+        '<p>If both faces seem to be showing about the same amount of feeling, you can choose "They feel the same."</p>' +
+        '<p>There are no right or wrong answers.</p></div>',
+    choices: ['Continue']
+}
+
+
 g.timeline.push(g.welcome);
 g.timeline.push(g.preload);
+g.timeline.push(g.fcp_instructions);
 
 // build timeline
 g.blocks.forEach(function(block, idx){
-    g.timeline.push({
-        type: 'html-button-response',
-        stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
-        choices: ['Continue']
-    });
+    // g.timeline.push({
+    //     type: 'html-button-response',
+    //     stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
+    //     choices: ['Continue']
+    // });
 
     g.timeline.push({
         timeline: [{
@@ -393,10 +411,10 @@ for (let i=0; i < g.emotions.length; i++) {
 
 g.sstrial = {
     type: 'html-slider-response',
-    labels: ['Not at all', 'Extremely strongly'],
+    labels: ['Not feeling much', 'Some', 'Feeling a lot'],
     prompt: '',
     stimulus: function() {
-        return '<p>How strongly does this face express emotion?</p>' +
+        return '<p>How much does this person seem to be feeling?</p>' +
             '<img alt="human_face" src="' + g.repo + jsPsych.timelineVariable('imagepath', true) + '">';
     },
     data: {
@@ -408,20 +426,26 @@ g.sstrial = {
 }
 
 
-//g.timeline = [];  // TESTING ONLY
+g.timeline = [];  // TESTING ONLY
 
 g.timeline.push({
     type: 'html-button-response',
-    stimulus: 'In the following task, you will be presented with 36 faces. For each face, you will be asked to indicate how strongly emotion is expressed.',
+    stimulus: '<div class="instructions-container"><p>In this part of the task, you will see one face at a time. People sometimes show very strong feelings, very slight feelings, or something in between.</p>' +
+        '<p>Your job is to look at the face and move the slider to show how much feeling you think the person has.</p>' +
+        '<ul><li>Move the slider all the way to the RIGHT if the person looks like they are feeling a lot or their feelings seem very strong.</li>' +
+        '<li>Move the slider all the way to the LEFT if the person does not seem to be feeling much at all.</li>' +
+        '<li>And if it looks like their feelings are somewhere in the middle, you can leave the slider anywhere between the two ends.</li></ul>' +
+        '<p>You can place the slider anywhere you think fits best. It does not need to be exactly on either end or in the middle.</p>' +
+        '<p>There are no right or wrong answers. Please decide based on how much feeling the person seems to be showing on their face.</p></div>',
     choices: ['Continue']
 });
 
 g.ssblocks.forEach(function(block, idx){
-    g.timeline.push({
-        type: 'html-button-response',
-        stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
-        choices: ['Continue']
-    });
+    // g.timeline.push({
+    //     type: 'html-button-response',
+    //     stimulus: 'This block will concern the emotion "' + block.emotion_label + '"',
+    //     choices: ['Continue']
+    // });
     g.timeline.push({
         timeline: [{
             timeline: [g.blank, g.fixation, g.sstrial],
