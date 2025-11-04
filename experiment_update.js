@@ -426,7 +426,7 @@ g.sstrial = {
 }
 
 
-g.timeline = [];  // TESTING ONLY
+//g.timeline = [];  // TESTING ONLY
 
 g.timeline.push({
     type: 'html-button-response',

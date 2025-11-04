@@ -25,7 +25,8 @@
         timeline: g.timeline,
         display_element: 'display_stage',
         on_finish: function() {
-            jsPsych.data.displayData();
+            jsPsych.data.get().localSave('csv', 'test_fcp_slider.csv', true);
+            //jsPsych.data.displayData();
         }
     })
 </script>
