@@ -452,7 +452,7 @@ g.ss_practice_trial = {
 }
 
 
-g.timeline = [];  // TESTING ONLY
+//g.timeline = [];  // TESTING ONLY
 
 g.timeline.push({
     type: 'html-button-response',
