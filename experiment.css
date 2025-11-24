@@ -69,3 +69,21 @@ div:has(>.samebtn) {
     top: -650px;
     font-size: 20px;
 }
+
+.fakeface {
+    display: inline-block;
+    text-align: center;
+    width:300px;
+    height:400px;
+    line-height: 400px;
+    font-size: xxx-large;
+    color: black;
+    background-color: white;
+}
+div:has(>.fakeface) {
+    text-align: center;
+}
+button:has(.fakeface) {
+    position: relative;
+    top: -170px;
+}

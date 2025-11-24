@@ -253,16 +253,27 @@ g.trial = {
     }
 }
 
+g.practice_trial = {
+    type: 'html-button-response',
+    stimulus: '',
+    choices: ['left', 'same', 'right'],
+    button_html: function(){
+        return [
+            '<button class="faceimg"><div class="fakeface">+</div></button>',
+            '<button class="samebtn">They feel the same</button>',
+            '<button class="faceimg"><div class="fakeface">+</div></button>'
+        ]
+    },
+    margin_horizontal: '70px',
+    margin_vertical: '10px',
+    prompt: function(){
+        return '<div class="topprompt">Who seems to be feeling more?</div>'
+    }
+}
+
 g.fcp_instructions = {
     type: 'html-button-response',
-    stimulus: '<div class="instructions-container"><p>In this task, two faces will appear on the screen at the same time.</p>' +
-        '<p>People can show feelings in different amounts. Sometimes someone looks like they are feeling a lot, and other times they look like they are feeling only a little, or not much at all.</p>' +
-        '<p>Your job is to:</p>' +
-        '<ul><li>Look at both faces carefully.</li>' +
-        '<li>Choose the face that seems to be feeling more.</li>' +
-        '<li>The face showing more feeling might be on the left or the right.</li></ul>' +
-        '<p>If both faces seem to be showing about the same amount of feeling, you can choose "They feel the same."</p>' +
-        '<p>There are no right or wrong answers.</p></div>',
+    stimulus: '<div class="instructions-container"><p>People show different amounts of feeling on their faces. Sometimes someone might look like they’re feeling just a little bit, like when you’re sitting quietly on a long car ride. Other times, someone might look like they’re feeling a lot, like when you’re playing with your friends.</p>',
     choices: ['Continue']
 }
 
@@ -270,6 +281,12 @@ g.fcp_instructions = {
 g.timeline.push(g.welcome);
 g.timeline.push(g.preload);
 g.timeline.push(g.fcp_instructions);
+g.timeline.push(g.practice_trial);
+g.timeline.push({
+    type: 'html-button-response',
+    stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/0*.png">',
+    choices: ['Continue']
+});
 
 // build timeline
 g.blocks.forEach(function(block, idx){
@@ -289,7 +306,7 @@ g.blocks.forEach(function(block, idx){
 
     g.timeline.push({
         type: 'html-button-response',
-        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/' + (idx + 1).toString() +  '.png">',
+        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/' + (idx + 1).toString() +  '*.png">',
         choices: ['Continue']
     });
 });
@@ -424,19 +441,28 @@ g.sstrial = {
         trialtype: jsPsych.timelineVariable('trialtype')
     }
 }
+g.ss_practice_trial = {
+    type: 'html-slider-response',
+    labels: ['Not feeling much', 'Some', 'Feeling a lot'],
+    prompt: '',
+    stimulus: function() {
+        return '<p>How much does this person seem to be feeling?</p>' +
+            '<div class="fakeface">+</div>';
+    }
+}
 
 
-//g.timeline = [];  // TESTING ONLY
+g.timeline = [];  // TESTING ONLY
 
 g.timeline.push({
     type: 'html-button-response',
-    stimulus: '<div class="instructions-container"><p>In this part of the task, you will see one face at a time. People sometimes show very strong feelings, very slight feelings, or something in between.</p>' +
-        '<p>Your job is to look at the face and move the slider to show how much feeling you think the person has.</p>' +
-        '<ul><li>Move the slider all the way to the RIGHT if the person looks like they are feeling a lot or their feelings seem very strong.</li>' +
-        '<li>Move the slider all the way to the LEFT if the person does not seem to be feeling much at all.</li>' +
-        '<li>And if it looks like their feelings are somewhere in the middle, you can leave the slider anywhere between the two ends.</li></ul>' +
-        '<p>You can place the slider anywhere you think fits best. It does not need to be exactly on either end or in the middle.</p>' +
-        '<p>There are no right or wrong answers. Please decide based on how much feeling the person seems to be showing on their face.</p></div>',
+    stimulus: '<div class="instructions-container"><p>People can show very strong feelings, very slight feelings, or something in between. For example, someone might look like they’re feeling just a little, like during a quiet moment at home, or they might look like they’re feeling a lot, like when something big happens.</p></div>',
+    choices: ['Continue']
+});
+g.timeline.push(g.ss_practice_trial);
+g.timeline.push({
+    type: 'html-button-response',
+    stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/0*.png">',
     choices: ['Continue']
 });
 
@@ -455,7 +481,7 @@ g.ssblocks.forEach(function(block, idx){
     });
     g.timeline.push({
         type: 'html-button-response',
-        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/' + (idx + 1).toString() +  '.png">',
+        stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/' + (idx + 1).toString() +  '*.png">',
         choices: ['Continue']
     });
 });
