@@ -259,10 +259,10 @@ g.practice_trial = {
     choices: ['left', 'same', 'right'],
     button_html: function(){
         return [
-            '<button class="faceimg"><img alt="human_face" src="' + g.repo + 'fcp_updated/subject_18/Happy/sub18.png' + '"></button>',
+            '<button class="faceimg"><img alt="human_face" src="' + g.repo + 'subject_8/Happy/sub8.png' + '"></button>',
             //'<button class="faceimg"><div class="fakeface">+</div></button>',
             '<button class="samebtn">They feel the same</button>',
-            '<button class="faceimg"><img alt="human_face" src="' + g.repo + 'fcp_updated/subject_42/Happy/sub42.png' + '"></button>'
+            '<button class="faceimg"><img alt="human_face" src="' + g.repo + 'subject_8/Happy/sub8.png' + '"></button>'
             //'<button class="faceimg"><div class="fakeface">+</div></button>'
         ]
     },
@@ -457,7 +457,7 @@ g.ss_practice_trial = {
     prompt: '',
     stimulus: function() {
         return '<p>How much does this person seem to be feeling?</p>' +
-            '<img alt="human_face" src="' + g.repo + 'fcp_updated/subject_42/Happy/sub42.png' + '">';
+            '<img alt="human_face" src="' + g.repo + 'subject_8/Happy/sub8.png' + '">';
     }
 }
 
