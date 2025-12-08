@@ -259,9 +259,11 @@ g.practice_trial = {
     choices: ['left', 'same', 'right'],
     button_html: function(){
         return [
-            '<button class="faceimg"><div class="fakeface">+</div></button>',
+            '<button class="faceimg"><img alt="human_face" src="' + g.repo + 'fcp_updated/subject_18/Happy/sub18.png' + '"></button>',
+            //'<button class="faceimg"><div class="fakeface">+</div></button>',
             '<button class="samebtn">They feel the same</button>',
-            '<button class="faceimg"><div class="fakeface">+</div></button>'
+            '<button class="faceimg"><img alt="human_face" src="' + g.repo + 'fcp_updated/subject_42/Happy/sub42.png' + '"></button>'
+            //'<button class="faceimg"><div class="fakeface">+</div></button>'
         ]
     },
     margin_horizontal: '70px',
@@ -277,8 +279,16 @@ g.fcp_instructions = {
     choices: ['Continue']
 }
 
+g.id_prompt = {
+    type: 'survey-text',
+    questions: [
+        {prompt: 'Enter the participant ID', required: true}
+    ],
+    data: {name: 'participant_id'}
+}
 
 g.timeline.push(g.welcome);
+g.timeline.push(g.id_prompt);
 g.timeline.push(g.preload);
 g.timeline.push(g.fcp_instructions);
 g.timeline.push(g.practice_trial);
@@ -447,7 +457,7 @@ g.ss_practice_trial = {
     prompt: '',
     stimulus: function() {
         return '<p>How much does this person seem to be feeling?</p>' +
-            '<div class="fakeface">+</div>';
+            '<img alt="human_face" src="' + g.repo + 'fcp_updated/subject_42/Happy/sub42.png' + '">';
     }
 }
 
