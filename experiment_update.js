@@ -472,7 +472,7 @@ g.timeline.push({
 g.timeline.push(g.ss_practice_trial);
 g.timeline.push({
     type: 'html-button-response',
-    stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/0*.png">',
+    stimulus: '<img alt="Great job!" class="block-end-img" src="' + g.repo + 'fcp_updated/block_end_updated/0.5*.png">',
     choices: ['Continue']
 });
 
