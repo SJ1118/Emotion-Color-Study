@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Experiment</title>
+    <script src="lib/jspsych-6.3.1/jspsych.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-html-slider-response.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="lib/jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+
+    <script src="experiment_update.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <link href="lib/jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
+    <link href="experiment.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id = 'display_stage_background'></div>
+<div id = 'display_stage'></div>
+</body>
+
+<script>
+
+    jsPsych.init({
+        timeline: g.timeline,
+        display_element: 'display_stage',
+        on_finish: function() {
+
+            let participant_id = jsPsych.data.get().filter({name: 'participant_id'}).values()[0].response.Q0;
+            var task_name = "emotion-color-study-update";
+            var save_url = "https://experiment.childemotion.waisman.wisc.edu/save_data.php";
+            var data_dir = task_name;
+
+            let d = new Date();
+            let datestr = d.getFullYear()
+                + (d.getMonth() + 1).toString().padStart(2, '0')
+                + d.getDate().toString().padStart(2, '0')
+                + '_'
+                + d.getHours().toString().padStart(2, '0')
+                + d.getMinutes().toString().padStart(2, '0');
+
+            var file_name = task_name + '_' + participant_id + '_' + datestr;
+
+            function save_data_csv() {
+                $.ajax({
+                    type: 'post',
+                    cache: false,
+                    url: save_url,
+                    data: {
+                        data_dir: data_dir,
+                        file_name: file_name + '.csv', // the file type should be added
+                        exp_data: jsPsych.data.get().csv()
+                    }
+                });
+            }
+            save_data_csv();
+
+            //jsPsych.data.get().localSave('csv', 'test_fcp_slider.csv', true);
+            //jsPsych.data.displayData();
+        }
+    })
+</script>
+</html>
