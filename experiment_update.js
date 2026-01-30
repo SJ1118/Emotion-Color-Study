@@ -234,7 +234,7 @@ g.trial = {
     margin_horizontal: '70px',
     margin_vertical: '10px',
     prompt: function(){
-        return '<div class="topprompt">Who seems to be feeling more?</div>'
+        return '<div class="topprompt">Which face is showing the feeling more?</div>'
         // let emotion = jsPsych.timelineVariable('emotion_label');
         // return 'Which face conveys <b>' + emotion + '</b> most clearly?<br>Press the image.'
     },
@@ -269,7 +269,7 @@ g.practice_trial = {
     margin_horizontal: '70px',
     margin_vertical: '10px',
     prompt: function(){
-        return '<div class="topprompt">Who seems to be feeling more?</div>'
+        return '<div class="topprompt">Which face is showing the feeling more?</div>'
     }
 }
 
